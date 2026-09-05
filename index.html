@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Real estate portfolio tracker."
+  />
+  <title>EstateTrack | Real Estate Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">B</div>
+      <div>
+        <h1>Borneo</h1>
+        <span>Property monitoring</span>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="button button-secondary" id="exportBtn">
+        Export CSV
+      </button>
+      <button class="button button-primary" id="openModalBtn">
+        + Add Property
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">REAL ESTATE TRACKER</p>
+        <h2>Monitor your property portfolio with clarity.</h2>
+        <p class="hero-description">
+          Track prices, rental income, property status, and potential returns
+        </p>
+      </div>
+
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-label">Tracked properties</div>
+        <div class="stat-value" id="propertyCount">0</div>
+        <div class="stat-note">Across your portfolio</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-label">Portfolio value</div>
+        <div class="stat-value" id="portfolioValue">$0</div>
+        <div class="stat-note">Current estimated value</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-label">Average rental yield</div>
+        <div class="stat-value" id="averageYield">0%</div>
+        <div class="stat-note">Based on monthly rent</div>
+      </article>
+
+      <article class="stat-card accent-card">
+        <div class="stat-label">Price reductions</div>
+        <div class="stat-value" id="priceReductions">0</div>
+        <div class="stat-note">Potential opportunities</div>
+      </article>
+    </section>
+
+    <section class="workspace">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PORTFOLIO</p>
+          <h2>Your tracked properties</h2>
+        </div>
+
+        <div class="view-controls">
+          <label class="search-box">
+            <span>⌕</span>
+            <input
+              type="search"
+              id="searchInput"
+              placeholder="Search properties..."
+            />
+          </label>
+
+          <select id="statusFilter" class="select-control">
+            <option value="all">All statuses</option>
+            <option value="Watching">Watching</option>
+            <option value="Potential Deal">Potential Deal</option>
+            <option value="Owned">Owned</option>
+            <option value="Sold">Sold</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="propertyGrid" class="property-grid"></div>
+
+      <div id="emptyState" class="empty-state hidden">
+        <div class="empty-icon">⌂</div>
+        <h3>No properties found</h3>
+        <p>Add a property or adjust your search filters.</p>
+        <button class="button button-primary" id="emptyAddBtn">
+          Add Your First Property
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="modal-backdrop hidden" id="propertyModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">PROPERTY DETAILS</p>
+          <h2 id="modalTitle">Add property</h2>
+        </div>
+        <button class="close-button" id="closeModalBtn" aria-label="Close">
+          ×
+        </button>
+      </div>
+
+      <form id="propertyForm">
+        <input type="hidden" id="propertyId" />
+
+        <div class="form-grid">
+          <label>
+            Property name
+            <input
+              id="propertyName"
+              type="text"
+              placeholder="e.g. Maple Street Apartment"
+              required
+            />
+          </label>
+
+          <label>
+            Location
+            <input
+              id="propertyLocation"
+              type="text"
+              placeholder="e.g. Austin, TX"
+              required
+            />
+          </label>
+
+          <label>
+            Current price
+            <input
+              id="propertyPrice"
+              type="number"
+              min="0"
+              step="1000"
+              placeholder="350000"
+              required
+            />
+          </label>
+
+          <label>
+            Previous price
+            <input
+              id="propertyPreviousPrice"
+              type="number"
+              min="0"
+              step="1000"
+              placeholder="365000"
+            />
+          </label>
+
+          <label>
+            Monthly rent
+            <input
+              id="propertyRent"
+              type="number"
+              min="0"
+              step="50"
+              placeholder="2400"
+            />
+          </label>
+
+          <label>
+            Property status
+            <select id="propertyStatus" required>
+              <option value="Watching">Watching</option>
+              <option value="Potential Deal">Potential Deal</option>
+              <option value="Owned">Owned</option>
+              <option value="Sold">Sold</option>
+            </select>
+          </label>
+
+          <label>
+            Bedrooms
+            <input id="propertyBedrooms" type="number" min="0" placeholder="3" />
+          </label>
+
+          <label>
+            Area in square feet
+            <input id="propertyArea" type="number" min="0" placeholder="1450" />
+          </label>
+
+          <label class="full-width">
+            Property image URL
+            <input
+              id="propertyImage"
+              type="url"
+              placeholder="https://images.example.com/property.jpg"
+            />
+          </label>
+
+          <label class="full-width">
+            Notes
+            <textarea
+              id="propertyNotes"
+              rows="3"
+              placeholder="Add private notes about this property..."
+            ></textarea>
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="button button-secondary" id="cancelBtn">
+            Cancel
+          </button>
+          <button type="submit" class="button button-primary">
+            Save Property
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <template id="propertyTemplate">
+    <article class="property-card">
+      <div class="property-image">
+        <img class="card-image" alt="" />
+        <span class="status-badge"></span>
+        <button class="menu-button" aria-label="Delete property">•••</button>
+      </div>
+
+      <div class="property-content">
+        <div class="property-location"></div>
+        <h3 class="property-name"></h3>
+
+        <div class="price-row">
+          <strong class="property-price"></strong>
+          <span class="price-change"></span>
+        </div>
+
+        <div class="property-details">
+          <span class="bedroom-detail"></span>
+          <span class="area-detail"></span>
+          <span class="yield-detail"></span>
+        </div>
+
+        <div class="card-footer">
+          <span class="updated-date"></span>
+          <button class="text-button edit-button">Edit details →</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
